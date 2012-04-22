@@ -123,7 +123,7 @@ Com_login()
                                         Anonymous=1;
                         fi;
                         #Получаем файл с куками
-                        wget -qO/dev/null --post-data="nick=$Login&passwd=$Password" --save-cookies="$ConfigsPath/cookies.t$
+                        wget -qO/dev/null --post-data="nick=$Login&passwd=$Password" --save-cookies="$ConfigsPath/cookies.txt" http://www.linux.org.ru/login.jsp
                         if cat "$ConfigsPath/cookies.txt" | grep password > /dev/null
                                 then
                                         echo "Успешный вход"
