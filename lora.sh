@@ -19,14 +19,58 @@ Login="";
 Password="";
 Anonimous=0;
 
+TermCols=$(stty size | cut -d " " -f 2);
+TermRows=$(stty size | cut -d " " -f 1);
+
 mkdir $VarTmpPath$ProgramPath 2> /dev/null;
 mkdir $VarTmpPath$ProgramPath$PagesPath  2> /dev/null;
 
 # Блок функций
 
+Com_upsolid()
+{
+	i=3;
+	
+	echo -n "┍";
+	
+	while [ "$i" != "$TermCols" ]
+	do
+		echo -n "━";
+		
+		i=$(($i+1));
+	done;
+	
+	echo "┑";
+}
+
+Com_downsolid()
+{
+	i=3;
+	
+	echo -n "┕";
+	
+	while [ "$i" != "$TermCols" ]
+	do
+		echo -n "━";
+		
+		i=$(($i+1));
+	done;
+	
+	echo "┙";
+}
+
+Com_greet()
+{
+	Com_upsolid;
+	
+	
+	
+	Com_downsolid;
+}
+
 Com_exit()
 {
-	echo "Помните, anonimous любит вас.";
+	echo "Помните, anonymous любит вас.";
 	exit 0;
 }
 
@@ -180,6 +224,8 @@ Com_tracker()
 # answer - ответить на сообщение answer xxxxxxxx
 # history - показать историю запросов с возможностью выбора повторной отправки
 
+Com_greet;
+
 Com_login;
 
 while [ "$Command" != "exit" ];
@@ -190,6 +236,8 @@ do
 	
 	case "$Command" in
 		"tracker"*) Com_tracker $Command;;
+		
+		# TODO Добавить комментарий после 2-й ф-ии: http://www.linux.org.ru/forum/talks/7671922?cid=7672261
 	esac;
 	
 done;
