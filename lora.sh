@@ -29,9 +29,10 @@ CmdAdd() {
     then
       CMDS="$CMDS\n"
   fi
-  CmdName=$1
-  shift
-  CMDS="$CMDS$CmdName "
+  CmdName="$1"
+  CmdDesc="$2"
+  shift; shift
+  CMDS="$CMDS$CmdName SHELP${CmdDesc}EHELP "
   for cmd in $@
   do
     CMDS="$CMDS|$cmd|"

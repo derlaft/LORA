@@ -2,7 +2,7 @@
 
 #exit
 
-CmdAdd 'Com_exit' 'exit'
+CmdAdd 'Com_exit' 'Выход' 'exit'
 Com_exit()
 {
   echo "Помните, anonymous любит вас."

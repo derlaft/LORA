@@ -2,7 +2,7 @@
 
 #tracker
 
-CmdAdd 'Com_tracker' 'tracker'
+CmdAdd 'Com_tracker' 'Показать трекер' 'tracker'
 Com_tracker()
 {
   Count="$2"

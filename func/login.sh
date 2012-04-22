@@ -11,7 +11,7 @@ Com_IsLoggedIn() {
   fi
 }
 
-CmdAdd 'Com_login' 'login'
+CmdAdd 'Com_login' 'Логин на лоре' 'login'
 Com_login()
 {
   # Запрос логина

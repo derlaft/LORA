@@ -2,7 +2,7 @@
 
 #greet
 
-CmdAdd 'Com_greet' 'greet' 'motd'
+CmdAdd 'Com_greet' 'Показать приветствие' 'greet' 'motd'
 Com_greet()
 {
   Com_upsolid
