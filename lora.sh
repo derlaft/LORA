@@ -2,9 +2,6 @@
 
 # LORA v.0.0.1
 
-echo "Добро пожаловать в систему консольного доступа \"LORA\" v. 0.1";
-echo "_______________________________________________________________________";
-
 ProgramPath="/LORA";
 PagesPath="/pages";
 TrackerFileName="/tracker.html";
@@ -29,7 +26,7 @@ mkdir $VarTmpPath$ProgramPath$PagesPath  2> /dev/null;
 
 Com_upsolid()
 {
-	i=3;
+	i=2;
 	
 	echo -n "┍";
 	
@@ -43,9 +40,14 @@ Com_upsolid()
 	echo "┑";
 }
 
+Com_uptracker()
+{
+ # Работаю над этим
+}
+
 Com_downsolid()
 {
-	i=3;
+	i=2;
 	
 	echo -n "┕";
 	
@@ -59,11 +61,25 @@ Com_downsolid()
 	echo "┙";
 }
 
+Com_textline()
+{
+	Text=$1;
+	NeedCols=$(($TermCols-4));
+	Text="${Text::${NeedCols}}";
+	
+	while [ ${#Text} != $NeedCols ]
+	do
+		Text="$Text ";
+	done;
+	
+	echo "│ $Text │";
+}
+
 Com_greet()
 {
 	Com_upsolid;
 	
-	
+	Com_textline "Добро пожаловать в систему консольного доступа “LORA” v. 0.1";
 	
 	Com_downsolid;
 }
@@ -78,10 +94,13 @@ Com_login()
 {
 	# Запрос логина
 	
-	echo "Введите ваш логин для авторизации или оставьте поле пустым для";
-	echo "анонимного использования (в этом случае вы сможете авторизоваться";
-	echo "позже при помощи команды \"login\")";
-	echo "______________________________________________________________________";
+	Com_upsolid;
+	
+	Com_textline "Введите ваши логин и пароль для авторизации.";
+	Com_textline "вы можете оставить поле пустым для анонимного входа и";
+	Com_textline "использовать команду “login” для авторизации позже.";
+	
+	Com_downsolid;
 	
 	echo -n "Логин:";
 	
