@@ -18,8 +18,8 @@ Login="";
 Password="";
 Anonimous=0;
 
-mkdir $PagePath 2> /dev/null;
-mkdir $PagePath$PagesPath  2> /dev/null;
+mkdir $ProgramPath 2> /dev/null;
+mkdir $ProgramPath$PagesPath  2> /dev/null;
 
 # Блок функций
 
