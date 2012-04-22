@@ -17,7 +17,7 @@ TrackerAddress="/tracker/";
 
 Login="";
 Password="";
-Anonimous=0;
+Anonymous=0;
 
 TermCols=$(stty size | cut -d " " -f 2);
 TermRows=$(stty size | cut -d " " -f 1);
