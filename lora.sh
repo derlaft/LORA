@@ -111,14 +111,14 @@ Com_login()
 	if [[ $Login = "" ]]
 		then
 			echo "Активирован анонимный вход.";
-			Anonimous=1;
+			Anonymous=1;
 		else
 			echo -n "Пароль:";
 			read -s Password;
 			if [[ $Password = "" ]]
 				then
 					echo "Активирован анонимный вход.";
-					Anonimous=1;
+					Anonymous=1;
 			fi;
 			echo;
 	fi;
