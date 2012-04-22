@@ -50,10 +50,13 @@ Com_login()
         fi
     #Получаем файл с куками
     wget -qO/dev/null --post-data="nick=$Login&passwd=$Password" --save-cookies="$ConfigsPath/cookies.txt" "$LorAddress$LoginAddress"
-    if [ ! $(Com_IsLoggedIn) ]
+    if [[ ! $(Com_IsLoggedIn) ]]
       then
         echo "Не удалось войти, активирован анонимный вход"
         Anonymous=1
+      else
+        echo
+        echo "Пользователь $Login успешно авторизован"
       fi
     echo
   fi
