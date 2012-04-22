@@ -109,6 +109,7 @@ Com_login()
 	
 	read Login;
 	
+<<<<<<< HEAD
 	# Опрос пользователя.
 
 	if [[ $Login = "" ]]
@@ -135,6 +136,32 @@ Com_login()
 				fi;
 				echo;
 	fi;
+=======
+        # Опрос пользователя.
+
+        if [[ $Login = "" ]]
+                then
+                        echo "Активирован анонимный вход.";
+                        Anonymous=1;
+                else
+                        read -p "Пароль: " -s Password;
+                        if [[ $Password = "" ]]
+                                then
+                                        echo "Активирован анонимный вход.";
+                                        Anonymous=1;
+                        fi;
+                        #Получаем файл с куками
+                        wget -qO/dev/null --post-data="nick=$Login&passwd=$Password" --save-cookies="$ConfigsPath/cookies.txt" http://www.linux.org.ru/login.jsp
+                        if cat "$ConfigsPath/cookies.txt" | grep password > /dev/null
+                                then
+                                        echo "Успешный вход"
+                                else
+                                        echo "Не удалось войти, активирован анонимный вход"
+                                        Anonymous=1;
+                                fi;
+                        echo;
+        fi;
+>>>>>>> 153f9131d34efe64f1a7be03478f20900e3b4121
 }
 
 
