@@ -5,7 +5,7 @@
 echo "Добро пожаловать в систему консольного доступа \"LORA\" v. 0.1";
 echo "_______________________________________________________________________";
 
-ProgramPath=$HOME"/LORA";
+ProgramPath="/LORA";
 PagesPath="/pages";
 TrackerFileName="/tracker.html";
 VarTmpPath="/var/tmp";
