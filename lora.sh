@@ -5,9 +5,10 @@
 echo "Добро пожаловать в систему консольного доступа \"LORA\" v. 0.1";
 echo "_______________________________________________________________________";
 
-ProgramPath=$HOME"/.LORA";
+ProgramPath=$HOME"/LORA";
 PagesPath="/pages";
 TrackerFileName="/tracker.html";
+VarTmpPath="/var/tmp";
 TempFileName="/temp";
 TempFileName2="/temp2";
 
@@ -18,8 +19,8 @@ Login="";
 Password="";
 Anonimous=0;
 
-mkdir $ProgramPath 2> /dev/null;
-mkdir $ProgramPath$PagesPath  2> /dev/null;
+mkdir $VarTmpPath$ProgramPath 2> /dev/null;
+mkdir $VarTmpPath$ProgramPath$PagesPath  2> /dev/null;
 
 # Блок функций
 
@@ -77,8 +78,8 @@ Com_tracker()
 	ForumPattern="<div class=forum>";
 	TopicPattern="<tbody>";
 	
-	rm $ProgramPath$PagesPath$TrackerFileName 2> /dev/null;
-	wget -q $LorAddress$TrackerAddress -O $ProgramPath$PagesPath$TrackerFileName;
+	rm $VarTmpPath$ProgramPath$PagesPath$TrackerFileName 2> /dev/null;
+	wget -q $LorAddress$TrackerAddress -O $VarTmpPath$ProgramPath$PagesPath$TrackerFileName;
 	# echo "┍━ Индекс ━ Группа ━━━━━━━━ Заголовок ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┑"
 	# echo "│ 7668145  Web-development Как пропатчить KDE под FreeBSD?                    │";
 	# echo "┕━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┙";
@@ -93,16 +94,16 @@ Com_tracker()
 	# удалить пустые строки: /^$/d;
 	# удалить строки до начала форумного дива: 1,/$ForumPattern/d;
 	# удалить строки до начала форумной таблицы: 1,/$TopicPattern/d;
-	sed -e "s/<tr>//g;s/<\/tr>//g;s/<\/a>//g;s/<\/td>//g;s/<td>//g;s/ *$//;/^$/d;1,/$ForumPattern/d;1,/$TopicPattern/d" $ProgramPath$PagesPath$TrackerFileName > $ProgramPath$PagesPath$TempFileName;
+	sed -e "s/<tr>//g;s/<\/tr>//g;s/<\/a>//g;s/<\/td>//g;s/<td>//g;s/ *$//;/^$/d;1,/$ForumPattern/d;1,/$TopicPattern/d" $VarTmpPath$ProgramPath$PagesPath$TrackerFileName > $VarTmpPath$ProgramPath$PagesPath$TempFileName;
 	
 	# Номера тредов
-	Numbers=$(grep -oE --regexp="/[0-9]{7}" $ProgramPath$PagesPath$TempFileName | sed -e "s/\///g");
+	Numbers=$(grep -oE --regexp="/[0-9]{7}" $VarTmpPath$ProgramPath$PagesPath$TempFileName | sed -e "s/\///g");
 	
 	# sed
 	# удалить теги: s/<[^>]*>//g;
 	# удалить пробелы в начале строк: s/^[ \t]*//;
 	# удалить пустые строки: /^$/d;
-	sed -e "s/<[^>]*>//g;s/^[ \t]*//;/^$/d;" $ProgramPath$PagesPath$TempFileName > $ProgramPath$PagesPath$TempFileName2
+	sed -e "s/<[^>]*>//g;s/^[ \t]*//;/^$/d;" $VarTmpPath$ProgramPath$PagesPath$TempFileName > $VarTmpPath$ProgramPath$PagesPath$TempFileName2
 	
 	echo "┍━ Индекс ━ Группа ━━━━━━━━ Заголовок ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┑";
 	
@@ -120,7 +121,7 @@ Com_tracker()
 		echo -n "  ";
 		
 		# Имя раздела
-		Group=$(sed -n "1p" $ProgramPath$PagesPath$TempFileName2);
+		Group=$(sed -n "1p" $VarTmpPath$ProgramPath$PagesPath$TempFileName2);
 		
 		Group=$(echo -n "$Group" | sed -e "s/, не подтверждено//");
 		
@@ -133,22 +134,22 @@ Com_tracker()
 		
 		echo -n "$Group";
 		
-		Signal=$(sed -n "2p" $ProgramPath$PagesPath$TempFileName2 | tr -d '\012');
+		Signal=$(sed -n "2p" $VarTmpPath$ProgramPath$PagesPath$TempFileName2 | tr -d '\012');
 		
 		
 		while [ "${Signal::1}" != "(" ]
 		do
 			#sed
 			#удаляем строку: 1d;
-			sed -e "1d" $ProgramPath$PagesPath$TempFileName2 > $ProgramPath$PagesPath$TempFileName;
+			sed -e "1d" $VarTmpPath$ProgramPath$PagesPath$TempFileName2 > $VarTmpPath$ProgramPath$PagesPath$TempFileName;
 			
-			rm -f $ProgramPath$PagesPath$TempFileName2;
-			mv -f $ProgramPath$PagesPath$TempFileName $ProgramPath$PagesPath$TempFileName2;
+			rm -f $VarTmpPath$ProgramPath$PagesPath$TempFileName2;
+			mv -f $VarTmpPath$ProgramPath$PagesPath$TempFileName $VarTmpPath$ProgramPath$PagesPath$TempFileName2;
 			
-			Signal=$(sed -n "2p" $ProgramPath$PagesPath$TempFileName2 | tr -d '\012');
+			Signal=$(sed -n "2p" $VarTmpPath$ProgramPath$PagesPath$TempFileName2 | tr -d '\012');
 		done;
 		
-		TopicName=$(sed -n "1p" $ProgramPath$PagesPath$TempFileName2);
+		TopicName=$(sed -n "1p" $VarTmpPath$ProgramPath$PagesPath$TempFileName2);
 		
 		TopicName="${TopicName::50}";
 		
@@ -161,10 +162,10 @@ Com_tracker()
 		
 		#sed
 		#удалить 4 строки: 1,4d;
-		sed -e "1,4d" $ProgramPath$PagesPath$TempFileName2 > $ProgramPath$PagesPath$TempFileName;
+		sed -e "1,4d" $VarTmpPath$ProgramPath$PagesPath$TempFileName2 > $VarTmpPath$ProgramPath$PagesPath$TempFileName;
 		
-		rm -f $ProgramPath$PagesPath$TempFileName2;
-		mv -f $ProgramPath$PagesPath$TempFileName $ProgramPath$PagesPath$TempFileName2;
+		rm -f $VarTmpPath$ProgramPath$PagesPath$TempFileName2;
+		mv -f $VarTmpPath$ProgramPath$PagesPath$TempFileName $VarTmpPath$ProgramPath$PagesPath$TempFileName2;
 		
 		i=$(($i+1));
 		echo " │";
