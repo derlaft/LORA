@@ -40,6 +40,9 @@ CmdAdd() {
 }
 
 CmdProcess() {
+  if [ -z "$@" ] 
+    then return
+  fi
   NumOfCmd=$(echo -e "$CMDS" | grep -n "|$1|" | awk 'BEGIN{FS=":"};{print $1}')
   if [ -z "$NumOfCmd" ]
     then
