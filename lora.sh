@@ -40,17 +40,17 @@ CmdAdd() {
 }
 
 CmdProcess() {
-  if [ -z "$@" ] 
+  if [ -z "$@" ]
     then return
   fi
   NumOfCmd=$(echo -e "$CMDS" | grep -n "|$1|" | awk 'BEGIN{FS=":"};{print $1}')
   if [ -z "$NumOfCmd" ]
     then
-      echo "LORA: $1: Комманда не найдена"
+      echo "LORA: $1: Команда не найдена" #КоМанда - с одной М!
     else
       CmdName=$(echo -e "$CMDS" | sed -n "${NumOfCmd}p" | awk '{print $1}')
       shift
-      eval "$CmdName $@"
+      eval "$CmdName $2"
   fi
 }
 
@@ -64,14 +64,14 @@ if [ -d "./func/" ]
       source "$module"
     done
   else
-    echo "Тоска и печаль. Я не знаю, где наши функции"
+    echo "Тоска и печаль. Я не знаю, где наши функции."
 fi
 Debug "$CMDS"
 
 # Еще команды:
 # thread - показывает тред. thread xxxxxxxx
 # info - показывает информацию о треде. info xxxxxxxxxx
-# profile - показывает информацию о пользователе. profile xxxxxxxxxx
+# profile - показывает информацию о пользователе. profile xxxxxxxxxx // ПЕРВООЧЕРЕДНАЯ ЦЕЛЬ
 # answer - ответить на сообщение answer xxxxxxxx
 # history - показать историю запросов с возможностью выбора повторной отправки
 
@@ -84,6 +84,6 @@ do
   read -p "LORA> " Command
   CmdProcess $Command
 
-  #TODO Добавить комментарий после 2-й ф-ии: http://www.linux.org.ru/forum/talks/7671922?cid=7672261
+  #TODO Добавить комментарий после 2-й ф-ии: http://www.linux.org.ru/forum/talks/7671922?cid=7672261 (Да, я злопамятный)
   
 done

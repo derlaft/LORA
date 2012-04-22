@@ -3,15 +3,21 @@
 #login
 
 Com_IsLoggedIn() {
-  if cat "$ConfigsPath/cookies.txt" | grep password > /dev/null
+  if [ -f "$ConfigsPath/cookies.txt" ]
     then
-      echo "Привет, $(cat ~/.LORA/cookies.txt |grep profile|awk '{print $7}')"
+      if cat "$ConfigsPath/cookies.txt" | grep password > /dev/null
+        then
+          User=$(cat "$ConfigsPath/cookies.txt" | grep profile | awk '{print $7}')
+          echo "Привет, $User"
+        else
+          return 1
+      fi
     else
       return 1
-  fi
+  fi;
 }
 
-CmdAdd 'Com_login' 'Логин на лоре' 'login'
+CmdAdd 'Com_login' 'Логин на ЛОРе' 'login'
 Com_login()
 {
   # Запрос логина
