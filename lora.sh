@@ -25,7 +25,7 @@ mkdir $ProgramPath$PagesPath  2> /dev/null;
 
 Com_exit()
 {
-	echo "Спасибо за пользование программой";
+	echo "Помните, anonimous любит вас.";
 	exit 0;
 }
 
