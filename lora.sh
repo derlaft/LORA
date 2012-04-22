@@ -268,8 +268,8 @@ do
   read Command
   
   case "$Command" in
-    "tracker"*) Com_tracker $Command;
-    "login") Com_login;
+    "tracker"*) Com_tracker $Command;;
+    "login") Com_login;;
     
     # TODO Добавить комментарий после 2-й ф-ии: http://www.linux.org.ru/forum/talks/7671922?cid=7672261
   esac
