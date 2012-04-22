@@ -105,9 +105,7 @@ Com_login()
   
   Com_downsolid
   
-  echo -n "Логин:"
-  
-  read Login
+  read -p "Логин: " Login
   
   # Опрос пользователя.
 
@@ -264,8 +262,7 @@ Com_login
 while [ "$Command" != "exit" ]
 do
   
-  echo -n "LORA>"
-  read Command
+  read -p "LORA>" Command
   
   case "$Command" in
     "tracker"*) Com_tracker $Command;;
