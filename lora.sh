@@ -17,7 +17,7 @@ TrackerAddress="/tracker/";
 
 Login="";
 Password="";
-Anonimous=0;
+Anonymous=0;
 
 mkdir $VarTmpPath$ProgramPath 2> /dev/null;
 mkdir $VarTmpPath$ProgramPath$PagesPath  2> /dev/null;
@@ -26,7 +26,7 @@ mkdir $VarTmpPath$ProgramPath$PagesPath  2> /dev/null;
 
 Com_exit()
 {
-	echo "Помните, anonimous любит вас.";
+	echo "Помните, anonymous любит вас.";
 	exit 0;
 }
 
@@ -48,14 +48,14 @@ Com_login()
 	if [[ $Login = "" ]]
 		then
 			echo "Активирован анонимный вход.";
-			Anonimous=1;
+			Anonymous=1;
 		else
 			echo -n "Пароль:";
 			read -s Password;
 			if [[ $Password = "" ]]
 				then
 					echo "Активирован анонимный вход.";
-					Anonimous=1;
+					Anonymous=1;
 			fi;
 			echo;
 	fi;
