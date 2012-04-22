@@ -147,8 +147,7 @@ Com_tracker()
   
   ForumPattern="<div class=forum>"
   TopicPattern="<tbody>"
-  
-  rm $VarTmpPath$ProgramPath$PagesPath$TrackerFileName 2> /dev/null
+
   tracker_html=$(wget -q $LorAddress$TrackerAddress -O-)
   # echo "┍━ Индекс ━ Группа ━━━━━━━━ Заголовок ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┑"
   # echo "│ 7668145  Web-development Как пропатчить KDE под FreeBSD?                    │"
