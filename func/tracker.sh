@@ -5,7 +5,7 @@
 CmdAdd 'Com_tracker' 'Показать трекер' 'tracker'
 Com_tracker()
 {
-  Count="$2"
+  Count="$1"
   if [[ "$Count" = "" ]] || [[ "$Count" -gt 20 ]]
     then
       Count=20
