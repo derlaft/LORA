@@ -2,6 +2,7 @@
 
 # LORA v.0.0.1
 
+ConfigsPath="$HOME/.LORA"
 ProgramPath="/LORA";
 PagesPath="/pages";
 TrackerFileName="/tracker.html";
@@ -21,6 +22,7 @@ TermRows=$(stty size | cut -d " " -f 1);
 
 mkdir $VarTmpPath$ProgramPath 2> /dev/null;
 mkdir $VarTmpPath$ProgramPath$PagesPath  2> /dev/null;
+mkdir "$ConfigsPath" 2> /dev/null
 
 # Блок функций
 
@@ -42,6 +44,7 @@ Com_upsolid()
 
 Com_uptracker()
 {
+ echo -n;
  # Работаю над этим
 }
 
@@ -106,23 +109,32 @@ Com_login()
 	
 	read Login;
 	
-	# Опрос пользователя.
-	
-	if [[ $Login = "" ]]
-		then
-			echo "Активирован анонимный вход.";
-			Anonymous=1;
-		else
-			echo -n "Пароль:";
-			read -s Password;
-			if [[ $Password = "" ]]
-				then
-					echo "Активирован анонимный вход.";
-					Anonymous=1;
-			fi;
-			echo;
-	fi;
+        # Опрос пользователя.
+
+        if [[ $Login = "" ]]
+                then
+                        echo "Активирован анонимный вход.";
+                        Anonymous=1;
+                else
+                        read -p "Пароль: " -s Password;
+                        if [[ $Password = "" ]]
+                                then
+                                        echo "Активирован анонимный вход.";
+                                        Anonymous=1;
+                        fi;
+                        #Получаем файл с куками
+                        wget -qO/dev/null --post-data="nick=$Login&passwd=$Password" --save-cookies="$ConfigsPath/cookies.t$
+                        if cat "$ConfigsPath/cookies.txt" | grep password > /dev/null
+                                then
+                                        echo "Успешный вход"
+                                else
+                                        echo "Не удалось войти, активирован анонимный вход"
+                                        Anonymous=1;
+                                fi;
+                        echo;
+        fi;
 }
+
 
 Com_tracker()
 {
@@ -200,7 +212,7 @@ Com_tracker()
 		Signal=$(sed -n "2p" $VarTmpPath$ProgramPath$PagesPath$TempFileName2 | tr -d '\012');
 		
 		
-		while [ "${Signal::1}" != "(" ]
+		while [ "${Signal::1}" != '(' ]
 		do
 			#sed
 			#удаляем строку: 1d;
