@@ -2,6 +2,10 @@
 
 # LORA v.0.0.1
 
+echo "Добро пожаловать в систему консольного доступа \"LORA\" v. 0.1";
+echo "_______________________________________________________________________";
+
+ConfigsPath="$HOME/.LORA"
 ProgramPath="/LORA";
 PagesPath="/pages";
 TrackerFileName="/tracker.html";
@@ -16,73 +20,11 @@ Login="";
 Password="";
 Anonymous=0;
 
-TermCols=$(stty size | cut -d " " -f 2);
-TermRows=$(stty size | cut -d " " -f 1);
-
-mkdir $VarTmpPath$ProgramPath 2> /dev/null;
-mkdir $VarTmpPath$ProgramPath$PagesPath  2> /dev/null;
+mkdir "$VarTmpPath$ProgramPath" 2> /dev/null;
+mkdir "$VarTmpPath$ProgramPath$PagesPath"  2> /dev/null;
+mkdir "$ConfigsPath" 2 > /dev/null
 
 # Блок функций
-
-Com_upsolid()
-{
-	i=2;
-	
-	echo -n "┍";
-	
-	while [ "$i" != "$TermCols" ]
-	do
-		echo -n "━";
-		
-		i=$(($i+1));
-	done;
-	
-	echo "┑";
-}
-
-Com_uptracker()
-{
- # Работаю над этим
-}
-
-Com_downsolid()
-{
-	i=2;
-	
-	echo -n "┕";
-	
-	while [ "$i" != "$TermCols" ]
-	do
-		echo -n "━";
-		
-		i=$(($i+1));
-	done;
-	
-	echo "┙";
-}
-
-Com_textline()
-{
-	Text=$1;
-	NeedCols=$(($TermCols-4));
-	Text="${Text::${NeedCols}}";
-	
-	while [ ${#Text} != $NeedCols ]
-	do
-		Text="$Text ";
-	done;
-	
-	echo "│ $Text │";
-}
-
-Com_greet()
-{
-	Com_upsolid;
-	
-	Com_textline "Добро пожаловать в систему консольного доступа “LORA” v. 0.1";
-	
-	Com_downsolid;
-}
 
 Com_exit()
 {
@@ -94,17 +36,12 @@ Com_login()
 {
 	# Запрос логина
 	
-	Com_upsolid;
+	echo "Введите ваш логин для авторизации или оставьте поле пустым для";
+	echo "анонимного использования (в этом случае вы сможете авторизоваться";
+	echo "позже при помощи команды \"login\")";
+	echo "______________________________________________________________________";
 	
-	Com_textline "Введите ваши логин и пароль для авторизации.";
-	Com_textline "вы можете оставить поле пустым для анонимного входа и";
-	Com_textline "использовать команду “login” для авторизации позже.";
-	
-	Com_downsolid;
-	
-	echo -n "Логин:";
-	
-	read Login;
+	read -p "Логин: " Login;
 	
 	# Опрос пользователя.
 	
@@ -113,13 +50,21 @@ Com_login()
 			echo "Активирован анонимный вход.";
 			Anonymous=1;
 		else
-			echo -n "Пароль:";
-			read -s Password;
+			read -p "Пароль: " -s Password;
 			if [[ $Password = "" ]]
 				then
 					echo "Активирован анонимный вход.";
 					Anonymous=1;
 			fi;
+			#Получаем файл с куками
+			wget -qO/dev/null --post-data="nick=$Login&passwd=$Password" --save-cookies="$ConfigsPath/cookies.txt" http://www.linux.org.ru/login.jsp;
+			if cat "$ConfigsPath/cookies.txt" | grep password > /dev/null
+				then
+					echo "Успешный вход"
+				else
+					echo "Не удалось войти, активирован анонимный вход"
+					Anonymous=1;
+				fi;
 			echo;
 	fi;
 }
@@ -243,8 +188,6 @@ Com_tracker()
 # answer - ответить на сообщение answer xxxxxxxx
 # history - показать историю запросов с возможностью выбора повторной отправки
 
-Com_greet;
-
 Com_login;
 
 while [ "$Command" != "exit" ];
@@ -255,8 +198,6 @@ do
 	
 	case "$Command" in
 		"tracker"*) Com_tracker $Command;;
-		
-		# TODO Добавить комментарий после 2-й ф-ии: http://www.linux.org.ru/forum/talks/7671922?cid=7672261
 	esac;
 	
 done;
