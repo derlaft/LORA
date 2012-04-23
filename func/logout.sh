@@ -5,7 +5,7 @@
 CmdAdd 'Com_logout' 'Разлогиниться' 'logout'
 Com_logout()
 {
-  rm -f "$ConfigsPath/cookies.txt" 2> /dev/null
+  rm -f "$ConfigsPath$CookiesFile" 2> /dev/null
   Anonymous=1;
   
   Com_upsolid

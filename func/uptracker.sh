@@ -4,6 +4,12 @@
 
 Com_uptracker()
 {
- echo -n
- # Работаю над этим
+  j=40
+  echo -n "┍━ Индекс ━ Группа ━━━━━━━━ Заголовок ━━"
+  while [ $j != $(($TermCols-1)) ]
+  do
+    echo -n "━"
+    j=$(($j+1))
+  done
+  echo "┑";
 }
