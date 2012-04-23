@@ -25,34 +25,60 @@ Debug() {
   fi
 }
 
+CmdNum=0
+#CmdFunc - функции
+#CmdName - команда
+#CmdHelp - описание
+
 CmdAdd() {
-  if [ -n "$CMDS" ]
-    then
-      CMDS="$CMDS\n"
-  fi
-  CmdName="$1"
-  CmdDesc="$2"
-  shift; shift
-  CMDS="$CMDS$CmdName SHELP${CmdDesc}EHELP "
-  for cmd in $@
+  CmdFunc[$CmdNum]="$1"
+  shift
+  CmdHelp[$CmdNum]="$1"
+  shift
+  CmdName[$CmdNum]="$@"
+
+  #Debug "Adding CMD #$CmdNum: ${CmdFunc[$CmdNum]} || ${CmdHelp[$CmdNum]} || ${CmdName[$CmdNum]}"
+  CmdNum=$((CmdNum+1))
+}
+
+FindCommand() {
+  for CmdNum in $(seq 0 "${#CmdName}")
   do
-    CMDS="$CMDS|$cmd|"
+    for Alias in ${CmdName[$CmdNum]}
+    do
+      if [[ "$1" = "$Alias" ]]
+        then
+          if [[ "$#" -eq "1" ]] || [[ "$2" = "Func" ]]
+          then
+            echo "${CmdFunc[$CmdNum]}"
+            return 0
+          elif [[ "$2" -eq "Help" ]]
+          then
+            echo "${CmdHelp[$CmdNum]}"
+            return 0
+          else
+            Debug 'Шо мне делать, а?'
+            return 42
+          fi
+      fi
+    done
   done
+  return 1
 }
 
 CmdProcess() {
   if [[ -z "$@" ]]
     then return
   fi
-  NumOfCmd=$(echo -e "$CMDS" | grep -n "|$1|" | awk 'BEGIN{FS=":"};{print $1}')
-  if [ -z "$NumOfCmd" ]
+  Command=$(FindCommand "$1")
+  if [[ -n "$Command" ]]
     then
-      echo "LORA: $1: Команда не найдена" #КоМанда - с одной М!
-    else
-      CmdName=$(echo -e "$CMDS" | sed -n "${NumOfCmd}p" | awk '{print $1}')
       shift
-      eval "$CmdName $@"
+      eval "$Command" $@
+    else
+      echo "LORA: $1: Команда не найдена"
   fi
+  unset Found
 }
 
 CmdCheckEnv() {
@@ -63,7 +89,7 @@ CmdCheckEnv() {
       Com_textline "Ваш терминал должен иметь как минимум 80 символов в ширину"
       Com_downsolid
       exit 1
-  fi;
+  fi
 }
 
 mkdir "$ConfigsPath" 2> /dev/null

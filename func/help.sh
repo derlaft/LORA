@@ -2,45 +2,34 @@
 
 #help
 
-Com_helptitle()
-{
-  j=12
-  echo -n "┍━ Справка ━"
-  while [ $j != $(($TermCols-1)) ]
-  do
-    echo -n "━"
-    j=$(($j+1))
-  done
-  echo "┑";
-}
-
 CmdAdd 'Com_help' 'Показать список команд' 'help' 'h' '?'
 Com_help()
 {
-  Com_helptitle
+  if [[ "$#" -eq "0" ]]
+  then
+    echo "Для справки по определенной команде введите 'help команда'"
+    echo "Доступные команды:"
 
-  #Сделано очень аццки, надеюсь, что будет более хороший вариант
-  #Так пойдет? //Al.
-  Help=$(echo -e "$CMDS" | sed -e 's/^.*SHELP//;s/EHELP.*//g')
-  Line=1
+    #Сделано очень аццки, надеюсь, что будет более хороший вариант
+    #Так пойдет? //Al. 
+    #Переделал. Всё равно получилось не очень, но лучше, намного лучше //der
   
-  echo -e "$Help" | while read HelpInfo
+    Cmds=$(for CmdNum in $(seq 0 "${#CmdName}")
     do
-      Names=""
-      for alias in $(echo -ne "$CMDS" | sed -n "${Line}p" | sed -e 's/ /\n/g' | grep '|' | sed -e 's/|/ /g')
+      for Alias in ${CmdName[$CmdNum]}
       do
-        Names=$Names$(echo -ne "$alias ")
-      done
-      
-      while [ ${#Names} != "20" ]
-      do
-        Names="$Names "
-      done
-      
-      Com_textline "$Names: $HelpInfo"
-      
-      Line=$((Line+1))
-    done
-  
-  Com_downsolid
+        echo "$Alias "
+      done | sort |  sed -e ':a; /$/N; s/\n/ /; ta'
+    done)
+    echo $Cmds
+  elif [[ "$#" -eq "1" ]]
+  then
+    echo -n "Команда $1: "
+    Help=$(FindCommand "$1" "Help")
+    if [[ -z "$Help" ]]; then
+      echo "Не найдена"
+    else
+      echo "$Help"
+    fi
+  fi
 }
