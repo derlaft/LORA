@@ -67,6 +67,7 @@ Com_login()
         Com_upsolid
         Com_textline "Успешная авторизация пользователем $Login."
         Com_downsolid
+        Anonymous=0
     fi
   fi
 }
