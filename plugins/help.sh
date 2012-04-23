@@ -19,9 +19,10 @@ Com_help()
       for Alias in ${CmdName[$CmdNum]}
       do
         echo "$Alias "
-      done | sort |  sed -e ':a; /$/N; s/\n/ /; ta'
+      done
     done)
     echo $Cmds
+
   elif [[ "$#" -eq "1" ]]
   then
     echo -n "Команда $1: "

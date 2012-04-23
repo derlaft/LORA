@@ -34,16 +34,16 @@ mkdir "$ConfigsPath" 2> /dev/null
 
 if [ -d "$PrDir/system/" ] 
   then
-    for module in $PrDir/system/*
+    for module in $PrDir/system/* $PrDir/plugins/*
     do
-      Debug "Soursing $module module"
+      Debug "Soursing $module system element"
       source "$module"
     done
   else
     echo "Тоска и печаль. Я не знаю, где мои системные функции."
     exit 1
 fi
-Debug "$CMDS"
+
 
 # Для функции Com_uptracker мне нужен терминал не менее 80 символов в ширину.
 CmdCheckEnv
