@@ -8,7 +8,9 @@ Com_IsLoggedIn() {
       if cat "$ConfigsPath/cookies.txt" | grep password > /dev/null
         then
           User=$(cat "$ConfigsPath/cookies.txt" | grep profile | awk '{print $7}')
-          echo "Привет, $User"
+          Com_upsolid
+          Com_textline "LORA приветстует тебя, $User."
+          Com_downsolid
         else
           return 1
       fi
@@ -39,25 +41,32 @@ Com_login()
 
   if [[ $Login = "" ]]
     then
-      echo "Активирован анонимный вход."
+      Com_upsolid
+      Com_textline "Активирован анонимный вход."
+      Com_downsolid
       Anonymous=1
     else
       read -p "Пароль: " -s Password
       if [[ $Password = "" ]]
         then
-          echo "Активирован анонимный вход."
+          Com_upsolid
+          Com_textline "Активирован анонимный вход."
+          Com_downsolid
           Anonymous=1
         fi
     #Получаем файл с куками
     wget -qO/dev/null --post-data="nick=$Login&passwd=$Password" --save-cookies="$ConfigsPath/cookies.txt" "$LorAddress$LoginAddress"
     if [[ ! $(Com_IsLoggedIn) ]]
       then
-        echo "Не удалось войти, активирован анонимный вход"
+        Com_upsolid
+        Com_textline "Не удалось авторизоваться, активирован анонимный вход."
+        Com_downsolid
         Anonymous=1
       else
         echo
-        echo "Пользователь $Login успешно авторизован"
-      fi
-    echo
+        Com_upsolid
+        Com_textline "Успешная авторизация пользователем $Login."
+        Com_downsolid
+    fi
   fi
 }
