@@ -2,7 +2,7 @@
 
 #exit
 
-CmdAdd 'Com_exit' 'Выход' 'exit'
+CmdAdd 'Com_exit' 'Выход' 'exit' 'end'
 Com_exit()
 {
   Com_upsolid
