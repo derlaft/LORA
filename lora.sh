@@ -29,7 +29,7 @@ if [ -d "$PrDir/system/" ]
   then
     for module in $PrDir/system/* $PrDir/plugins/*
     do
-      Debug "Soursing $module system element"
+      Debug "Soursing $module"
       source "$module"
     done
   else
@@ -56,10 +56,7 @@ CmdProcess 'login'
 
 while true
 do
-  
   read -p "LORA> " Command
   CmdProcess $Command
-
   #TODO Добавить комментарий после 2-го milestone: http://www.linux.org.ru/forum/talks/7671922?cid=7672261 (Да, я злопамятный)
-  
 done
