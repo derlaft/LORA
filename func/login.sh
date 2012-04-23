@@ -24,6 +24,10 @@ Com_login()
 {
   # Запрос логина
   
+  if Com_IsLoggedIn
+    then return
+  fi
+  
   Com_upsolid
   
   Com_textline "Введите ваши логин и пароль для авторизации."
@@ -31,10 +35,7 @@ Com_login()
   Com_textline "использовать команду “login” для авторизации позже."
   
   Com_downsolid
-  if Com_IsLoggedIn
-    then return
-  fi
-
+  
   read -p "Логин: " Login
   
   # Опрос пользователя.
