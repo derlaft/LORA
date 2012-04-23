@@ -9,7 +9,7 @@ Com_IsLoggedIn() {
         then
           User=$(cat "$ConfigsPath/cookies.txt" | grep profile | awk '{print $7}')
           Com_upsolid
-          Com_textline "LORA приветстует тебя, $User."
+          Com_textline "LORA приветствует тебя, $User."
           Com_downsolid
         else
           return 1
