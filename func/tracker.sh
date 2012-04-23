@@ -57,7 +57,6 @@ Com_tracker()
   i=1
   while [ $i -le $Count ]
   do
-    echo -n "│ "
     
     # sed
     # вывести i-ю строку: ${i}p
@@ -88,7 +87,7 @@ Com_tracker()
     
     TopicName=$(echo -e "$cleared2" | sed -n "1p")
     TopicNameLimit=$(($TermCols-30));
-    TopicName="${TopicName::${$TopicNameLimit}}"
+    TopicName="${TopicName::$TopicNameLimit}"
     
     while [ ${#TopicName} != "$TopicNameLimit" ]
     do
@@ -102,7 +101,6 @@ Com_tracker()
     cleared2=$(echo -e "$cleared2" | sed -e "1,4d")
     
     i=$((i+1))
-    echo " │"
   done
   
   Com_downsolid
