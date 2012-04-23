@@ -3,11 +3,11 @@
 #login
 
 Com_IsLoggedIn() {
-  if [ -f "$ConfigsPath/cookies.txt" ]
+  if [ -f "$ConfigsPath$CookiesFile" ]
     then
-      if cat "$ConfigsPath/cookies.txt" | grep password > /dev/null
+      if cat "$ConfigsPath$CookiesFile" | grep password > /dev/null
         then
-          User=$(cat "$ConfigsPath/cookies.txt" | grep profile | awk '{print $7}')
+          User=$(cat "$ConfigsPath$CookiesFile" | grep profile | awk '{print $7}')
           Com_upsolid
           Com_textline "LORA приветствует тебя, $User."
           Com_downsolid
@@ -28,7 +28,7 @@ Com_login()
     then return
   fi
   
-  Com_upsolid
+  Com_helptitle
   
   Com_textline "Введите ваши логин и пароль для авторизации."
   Com_textline "вы можете оставить поле пустым для анонимного входа и"
@@ -50,15 +50,18 @@ Com_login()
       read -p "Пароль: " -s Password
       if [[ $Password = "" ]]
         then
+          echo
           Com_upsolid
           Com_textline "Активирован анонимный вход."
           Com_downsolid
           Anonymous=1
+          return
         fi
     #Получаем файл с куками
-    wget -qO/dev/null --post-data="nick=$Login&passwd=$Password" --save-cookies="$ConfigsPath/cookies.txt" "$LorAddress$LoginAddress"
+    wget -qO/dev/null --post-data="nick=$Login&passwd=$Password" --save-cookies="$ConfigsPath$CookiesFile" "$LorAddress$LoginAddress"
     if [[ ! $(Com_IsLoggedIn) ]]
       then
+        echo
         Com_upsolid
         Com_textline "Не удалось авторизоваться, активирован анонимный вход."
         Com_downsolid

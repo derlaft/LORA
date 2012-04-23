@@ -9,6 +9,7 @@ PagesPath="/pages"
 LorAddress="https://www.linux.org.ru/"
 TrackerAddress="tracker/"
 LoginAddress="login.jsp"
+CookiesFile="/cookies.txt"
 
 Login=""
 Password=""
@@ -54,6 +55,17 @@ CmdProcess() {
   fi
 }
 
+CmdCheckEnv() {
+  if [[ (($TermCols -le 80 )) ]]
+    then
+      echo $TermCols
+      Com_upsolid
+      Com_textline "Ваш терминал должен иметь как минимум 80 символов в ширину"
+      Com_downsolid
+      exit 1
+  fi;
+}
+
 mkdir "$ConfigsPath" 2> /dev/null
 
 if [ -d "./func/" ]
@@ -65,9 +77,13 @@ if [ -d "./func/" ]
     done
   else
     echo "Тоска и печаль. Я не знаю, где наши функции."
-    exit 0
+    exit 1
 fi
 Debug "$CMDS"
+
+# Для функции Com_uptracker мне нужен терминал не менее 80 символов в ширину.
+CmdCheckEnv
+
 
 # Еще команды:
 # thread - показывает тред. thread xxxxxxxx
@@ -75,6 +91,8 @@ Debug "$CMDS"
 # profile - показывает информацию о пользователе. profile xxxxxxxxxx // ПЕРВООЧЕРЕДНАЯ ЦЕЛЬ
 # answer - ответить на сообщение answer xxxxxxxx
 # history - показать историю запросов с возможностью выбора повторной отправки
+
+
 
 CmdProcess 'greet'
 CmdProcess 'login'
@@ -85,6 +103,6 @@ do
   read -p "LORA> " Command
   CmdProcess $Command
 
-  #TODO Добавить комментарий после 2-й ф-ии: http://www.linux.org.ru/forum/talks/7671922?cid=7672261 (Да, я злопамятный)
+  #TODO Добавить комментарий после 2-го milestone: http://www.linux.org.ru/forum/talks/7671922?cid=7672261 (Да, я злопамятный)
   
 done

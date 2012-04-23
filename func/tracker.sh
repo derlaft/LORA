@@ -5,22 +5,21 @@
 CmdAdd 'Com_tracker' 'Показать трекер' 'tracker'
 Com_tracker()
 {
-  case $1 in
-  *[!0-9]*|"")
-    Com_upsolid
-    Com_textline "W: Введено некорректное количество тем."
-    Com_textline "   Используется значение по умолчанию."
-    Com_downsolid
-    Count=20;
-  ;;
-            *)
-    Count="$1"
-    if [[ "$Count" = "" ]] || [[ "$Count" -gt 20 ]]
-      then
-        Count=20
-    fi
-  ;;
-  esac
+  Count="$1"
+  if [[ "$Count" = "" ]] || [[ "$Count" -gt 20 ]]
+    then
+      Count=20
+    else
+      case $1 in
+        *[!0-9]*|"")
+          Com_upsolid
+          Com_textline "W: Введено некорректное количество тем."
+          Com_textline "   Используется значение по умолчанию."
+          Com_downsolid
+          Count=20;
+        ;;
+      esac
+  fi
   
   ForumPattern="<div class=forum>"
   TopicPattern="<tbody>"
@@ -51,7 +50,9 @@ Com_tracker()
   # удалить пустые строки: /^$/d
   cleared2=$(echo -e "$cleared" | sed -e "s/<[^>]*>//g;s/^[ \t]*//;/^$/d;")
   
-  echo "┍━ Индекс ━ Группа ━━━━━━━━ Заголовок ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┑"
+ # echo "┍━ Индекс ━ Группа ━━━━━━━━ Заголовок ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┑"
+  
+  Com_uptracker
   
   i=1
   while [ $i -le $Count ]
@@ -62,8 +63,7 @@ Com_tracker()
     # вывести i-ю строку: ${i}p
     
     # Индекс топика
-    echo -n "$Numbers" | sed -n "${i}p" | tr -d '\012'
-    echo -n "  "
+    Index=$(echo -n "$Numbers" | sed -n "${i}p" | tr -d '\012') # + 2 пробела
     
     # Имя раздела
     Group=$(echo -e "$cleared2" | sed -n "1p")
@@ -75,7 +75,6 @@ Com_tracker()
       Group="$Group "
     done
     
-    echo -n "$Group"
     Signal=$(echo -e "$cleared2" | sed -n "2p" | tr -d '\012')
     
     
@@ -88,14 +87,15 @@ Com_tracker()
     done
     
     TopicName=$(echo -e "$cleared2" | sed -n "1p")
-    TopicName="${TopicName::50}"
+    TopicNameLimit=$(($TermCols-30));
+    TopicName="${TopicName::${$TopicNameLimit}}"
     
-    while [ ${#TopicName} != "50" ]
+    while [ ${#TopicName} != "$TopicNameLimit" ]
     do
       TopicName="$TopicName "
     done
     
-    echo -n "$TopicName"
+    Com_textline "$Index  $Group$TopicName"
     
     #sed
     #удалить 4 строки: 1,4d
@@ -104,5 +104,6 @@ Com_tracker()
     i=$((i+1))
     echo " │"
   done
-  echo "┕━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┙"
+  
+  Com_downsolid
 }
