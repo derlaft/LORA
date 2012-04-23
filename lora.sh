@@ -65,6 +65,7 @@ if [ -d "./func/" ]
     done
   else
     echo "Тоска и печаль. Я не знаю, где наши функции."
+    exit 0
 fi
 Debug "$CMDS"
 
