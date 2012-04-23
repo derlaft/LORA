@@ -3,13 +3,13 @@
 # LORA v.0.0.1
 
 ConfigsPath="$HOME/.LORA"
-FuncDir="./" #костыль, нужно придумать что-нибудь умнее
+PrDir="./" #костыль, нужно придумать что-нибудь умнее
 PagesPath="/pages"
 
 LorAddress="https://www.linux.org.ru/"
 TrackerAddress="tracker/"
 LoginAddress="login.jsp"
-CookiesFile="/cookies.txt"
+CookiesFile="$ConfigsPath/cookies.txt"
 
 Login=""
 Password=""
@@ -18,68 +18,25 @@ Anonymous=0
 TermCols=$(stty size | cut -d " " -f 2)
 TermRows=$(stty size | cut -d " " -f 1)
 
-Debug() {
-  if [ -n "$DEBUG" ]
-    then
-      echo -e "$@" | sed -e 's/^/[DEBUG] /'
-  fi
-}
-
-CmdAdd() {
-  if [ -n "$CMDS" ]
-    then
-      CMDS="$CMDS\n"
-  fi
-  CmdName="$1"
-  CmdDesc="$2"
-  shift; shift
-  CMDS="$CMDS$CmdName SHELP${CmdDesc}EHELP "
-  for cmd in $@
-  do
-    CMDS="$CMDS|$cmd|"
-  done
-}
-
-CmdProcess() {
-  if [[ -z "$@" ]]
-    then return
-  fi
-  NumOfCmd=$(echo -e "$CMDS" | grep -n "|$1|" | awk 'BEGIN{FS=":"};{print $1}')
-  if [ -z "$NumOfCmd" ]
-    then
-      echo "LORA: $1: Команда не найдена" #КоМанда - с одной М!
-    else
-      CmdName=$(echo -e "$CMDS" | sed -n "${NumOfCmd}p" | awk '{print $1}')
-      shift
-      eval "$CmdName $@"
-  fi
-}
-
-CmdCheckEnv() {
-  if [[ (($TermCols -le 80 )) ]]
-    then
-      echo $TermCols
-      Com_upsolid
-      Com_textline "Ваш терминал должен иметь как минимум 80 символов в ширину"
-      Com_downsolid
-      exit 1
-  fi;
-}
+CmdNum=0
+#CmdFunc - функции
+#CmdName - команда
+#CmdHelp - описание
 
 mkdir "$ConfigsPath" 2> /dev/null
 
-if [ -d "./func/" ]
+if [ -d "$PrDir/system/" ] 
   then
-    for module in func/*
+    for module in $PrDir/system/* $PrDir/plugins/*
     do
-      Debug "Soursing $module module"
+      Debug "Soursing $module system element"
       source "$module"
     done
   else
-    echo "Тоска и печаль. Я не знаю, где наши функции."
+    echo "Тоска и печаль. Я не знаю, где мои системные функции."
     exit 1
 fi
-Debug "$CMDS"
+
 
 # Для функции Com_uptracker мне нужен терминал не менее 80 символов в ширину.
 CmdCheckEnv

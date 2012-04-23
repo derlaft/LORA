@@ -3,11 +3,11 @@
 #login
 
 Com_IsLoggedIn() {
-  if [ -f "$ConfigsPath$CookiesFile" ]
+  if [ -f "$CookiesFile" ]
     then
-      if cat "$ConfigsPath$CookiesFile" | grep password > /dev/null
+      if cat "$CookiesFile" | grep password > /dev/null
         then
-          User=$(cat "$ConfigsPath$CookiesFile" | grep profile | awk '{print $7}')
+          User=$(cat "$CookiesFile" | grep profile | awk '{print $7}')
           Com_upsolid
           Com_textline "LORA приветствует тебя, $User."
           Com_downsolid
@@ -58,7 +58,7 @@ Com_login()
           return
         fi
     #Получаем файл с куками
-    wget -qO/dev/null --post-data="nick=$Login&passwd=$Password" --save-cookies="$ConfigsPath$CookiesFile" "$LorAddress$LoginAddress"
+    wget -qO/dev/null --post-data="nick=$Login&passwd=$Password" --save-cookies="$CookiesFile" "$LorAddress$LoginAddress"
     if [[ ! $(Com_IsLoggedIn) ]]
       then
         echo

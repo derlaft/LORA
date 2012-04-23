@@ -2,6 +2,18 @@
 
 #table functions
 
+Com_helptitle()
+{
+  j=12
+  echo -n "┍━ Справка ━"
+  while [ $j != $(($TermCols-1)) ]
+  do
+echo -n "━"
+    j=$(($j+1))
+  done
+echo "┑";
+}
+
 Com_downsolid()
 {
   i=2
