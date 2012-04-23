@@ -7,7 +7,7 @@ Com_logout()
 {
   if [[ $Anonymous = "0" ]]
     then
-      rm -f "$ConfigsPath$CookiesFile" 2> /dev/null
+      rm -f "$CookiesFile" 2> /dev/null
       Anonymous=1;
   
       Com_upsolid
