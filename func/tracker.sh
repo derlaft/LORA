@@ -5,11 +5,22 @@
 CmdAdd 'Com_tracker' 'Показать трекер' 'tracker'
 Com_tracker()
 {
-  Count="$1"
-  if [[ "$Count" = "" ]] || [[ "$Count" -gt 20 ]]
-    then
-      Count=20
-  fi
+  case $1 in
+  *[!0-9]*|"")
+    Com_upsolid
+    Com_textline "W: Введено некорректное количество тем."
+    Com_textline "   Используется значение по умолчанию."
+    Com_downsolid
+    Count=20;
+  ;;
+            *)
+    Count="$1"
+    if [[ "$Count" = "" ]] || [[ "$Count" -gt 20 ]]
+      then
+        Count=20
+    fi
+  ;;
+  esac
   
   ForumPattern="<div class=forum>"
   TopicPattern="<tbody>"
