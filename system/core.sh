@@ -54,7 +54,7 @@ CmdProcess() {
 }
 
 CmdCheckEnv() {
-  if [[ (($TermCols < 80 )) ]]
+  if [[ -n "$TermsCols" ]] && (("$TermCols" < 80 ))
     then
       Com_upsolid
       Com_textline "Ваш терминал должен иметь как минимум 80 символов в ширину"
