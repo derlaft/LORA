@@ -18,13 +18,6 @@ Anonymous=0
 TermCols=$(stty size | cut -d " " -f 2)
 TermRows=$(stty size | cut -d " " -f 1)
 
-Debug() {
-  if [ -n "$DEBUG" ]
-    then
-      echo -e "$@" | sed -e 's/^/[DEBUG] /'
-  fi
-}
-
 CmdNum=0
 #CmdFunc - функции
 #CmdName - команда
